@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour {
     float speed = 5;
     float jumpVelocity = 15;
 
+    public GameObject finish;
     public GameObject road;
     public GameObject block;
     public float blockIndex = 0, wallIndex = 0;
@@ -17,13 +19,20 @@ public class Player : MonoBehaviour {
     public Rigidbody sphere;
 
     public Button left, right;
-
+    
     LevelManager levelManager;
     Vector3 velocity = Vector3.zero;
     public float smoothTime = 0.3f;
 
+    public TextMeshProUGUI currentScore, highScore;
+   
+    public int score = 0;
+    
+
     // Use this for initialization
     void Start () {
+
+        score = 0;
         sphere = GetComponent<Rigidbody>();
 
         MakeRoad();
@@ -31,15 +40,27 @@ public class Player : MonoBehaviour {
         left.onClick.AddListener(OnLeftClick);
         right.onClick.AddListener(OnRightClick);
 
+        
+
+        HighScore();
+
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+
+        score = (int)(Time.timeSinceLevelLoad * 10);
+        currentScore.GetComponent<TextMeshProUGUI>().text = "SCORE: " + score.ToString();
 
         GetInput();
 
         sphere.velocity = new Vector3(speed,0,0);
         wall.velocity = new Vector3(speed - 0.5f, 0, 0);
+
+        /*if (Mathf.Abs(sphere.position.x - wall.position.x) >= 5)
+        {
+            wall.transform.Translate(sphere.position.x + 5, 0, 0);
+        } */
 	}
 
     void Jump()
@@ -147,8 +168,14 @@ public class Player : MonoBehaviour {
 
         if (other.tag.Equals("Enemy"))
         {
-            Time.timeScale = 0;
+
             Debug.Log("Game end");
+
+            PlayerPrefs.SetString("HighScore", score.ToString());
+
+            finish.SetActive(true);
+
+            Time.timeScale = 0;
         }
     }
 
@@ -175,13 +202,17 @@ public class Player : MonoBehaviour {
         Destroy(newBlock, 50);
     }
 
+    
 
-    private void OnColliderEnter(Collider collider)
+    void HighScore()
     {
-        if (collider.tag.Equals("Enemy"))
+        if (PlayerPrefs.GetString("HighScore") == null)
         {
-            Time.timeScale = 0;
-            Debug.Log("Game end");
+            highScore.GetComponent<TextMeshProUGUI>().text = "High Score: 0";
+        }
+        else
+        {
+            highScore.GetComponent<TextMeshProUGUI>().text = "High Score: " + PlayerPrefs.GetString("HighScore");
         }
     }
 }

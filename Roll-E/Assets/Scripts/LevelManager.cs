@@ -25,7 +25,10 @@ public class LevelManager : MonoBehaviour {
 
     void StartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        //Player p = new Player();
+
+        //p.score = 0;
+        SceneManager.LoadScene(1);
     }
 
     void How2Play()
