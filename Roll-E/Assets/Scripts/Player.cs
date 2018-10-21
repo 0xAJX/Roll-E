@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
-    float speed = 5;
+    public float gravity = 10;
+    public float speed = 20;
     float jumpVelocity = 15;
 
     public GameObject finish;
@@ -27,20 +28,18 @@ public class Player : MonoBehaviour {
     public TextMeshProUGUI currentScore, highScore;
    
     public int score = 0;
-    
+
+    public bool isLeftSelected = false, isRightSelected = false;
 
     // Use this for initialization
     void Start () {
 
-        score = 0;
         sphere = GetComponent<Rigidbody>();
 
         MakeRoad();
 
-        left.onClick.AddListener(OnLeftClick);
-        right.onClick.AddListener(OnRightClick);
-
-        
+        //left.onClick.AddListener(OnLeftClick);
+        //right.onClick.AddListener(OnRightClick);
 
         HighScore();
 
@@ -55,17 +54,41 @@ public class Player : MonoBehaviour {
         GetInput();
 
         sphere.velocity = new Vector3(speed,0,0);
-        wall.velocity = new Vector3(speed - 0.5f, 0, 0);
+        wall.velocity = new Vector3(speed - 1.5f, 0, 0);
+        sphere.AddForce(new Vector3(0,-gravity,0) * sphere.mass);
 
         /*if (Mathf.Abs(sphere.position.x - wall.position.x) >= 5)
         {
-            wall.transform.Translate(sphere.position.x + 5, 0, 0);
+            wall.transform.Translate(sphere.position.x - 5, 0, 0);
         } */
-	}
+
+        if (sphere.position.y <= -3)
+        {
+            IsDead();
+        }
+
+        if (isLeftSelected && isRightSelected)
+        {
+            Jump();
+        }
+
+        if (isLeftSelected == true)
+        {
+            Vector3 v = new Vector3(0, 0, 50);
+            sphere.AddForce(v * 100);
+        }
+
+        if (isRightSelected == true)
+        {
+            Vector3 v = new Vector3(0, 0, -50);
+            sphere.AddForce(v * 100);
+        }
+
+    }
 
     void Jump()
     {
-        sphere.velocity = new Vector3(0,10,0);
+        sphere.velocity = new Vector3(0,jumpVelocity,0);
     }
 
     void GetInput()
@@ -78,78 +101,25 @@ public class Player : MonoBehaviour {
      
     }
 
-    IEnumerable Wait()
+
+    public void OnLeftSelect()
     {
-        yield return new WaitForSeconds(0.3f);   
+        isLeftSelected = true;
     }
 
-    void OnLeftClick()
+    public void OnRightSelect()
     {
-
-        if (sphere.transform.position.z >= 1f)
-        {
-
-        }
-        else
-        {
-
-            Vector3 v = new Vector3(sphere.position.x, sphere.position.y, sphere.position.z + 1);
-
-            /*for (float i=0 ; i <= 1f ; i += .1f)
-            {
-
-                sphere.position = Vector3.MoveTowards(sphere.position, v, 0.1f);
-                //sphere.position = Vector3.Lerp(sphere.position, v, i);
-                //Wait();  
-            } */
-
-
-           
-
-            
-
-            sphere.transform.Translate(0, 0, 1);
-           
-
-            //float a = sphere.position.z;
-
-            //Vector3 b = new Vector3(sphere.position.x, sphere.position.y, 1);
-
-            //sphere.position = b;
-        }
-        
+        isRightSelected = true;
     }
 
-    void OnRightClick()
+    public void OnleftUp()
     {
+        isLeftSelected = false;
+    }
 
-        if (sphere.transform.position.z <= -1f)
-        {
-
-        }
-        else
-        {
-
-            Vector3 v = new Vector3(sphere.position.x, sphere.position.y, sphere.position.z-1);
-            
-            /*for (float i=0; i <= 1f; i += .1f)
-            {
-                sphere.position = Vector3.Lerp(sphere.position, v, i);
-                Wait();
-            } */
-
-           // sphere.position = Vector3.SmoothDamp(sphere.position, v, ref velocity, 0f);
-
-            sphere.transform.Translate(0, 0, -1);
-            //Vector3 v = new Vector3(sphere.position.x, sphere.position.y, -1);
-            //sphere.position = Vector3.Lerp(sphere.position, v, 1f);
-
-            /*float a = sphere.position.z;
-
-            Vector3 b = new Vector3(sphere.position.x,sphere.position.y , (int)Mathf.Ceil(a));
-
-            sphere.position = b;*/
-        }
+    public void OnRightUp()
+    {
+        isRightSelected = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -168,14 +138,7 @@ public class Player : MonoBehaviour {
 
         if (other.tag.Equals("Enemy"))
         {
-
-            Debug.Log("Game end");
-
-            PlayerPrefs.SetString("HighScore", score.ToString());
-
-            finish.SetActive(true);
-
-            Time.timeScale = 0;
+            IsDead();
         }
     }
 
@@ -186,12 +149,14 @@ public class Player : MonoBehaviour {
 
         wallIndex++;
 
-        Destroy(newRoad, 50);
+        Destroy(newRoad, 40);
+
+        speed+= 0.5f;
     }
 
     public void SpawnBlock()
     {
-        int randomPositionZ = Random.Range(-1, 1);
+        int randomPositionZ = Random.Range(0, 2) -1;
 
         Vector3 newPosition = new Vector3(blockIndex * 10, 1, randomPositionZ);
 
@@ -199,7 +164,7 @@ public class Player : MonoBehaviour {
 
         blockIndex++;
 
-        Destroy(newBlock, 50);
+        Destroy(newBlock, 60);
     }
 
     
@@ -214,5 +179,16 @@ public class Player : MonoBehaviour {
         {
             highScore.GetComponent<TextMeshProUGUI>().text = "High Score: " + PlayerPrefs.GetString("HighScore");
         }
+    }
+
+    void IsDead()
+    {
+        Debug.Log("Game end");
+
+        PlayerPrefs.SetString("HighScore", score.ToString());
+
+        finish.SetActive(true);
+
+        Time.timeScale = 0;
     }
 }
