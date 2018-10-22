@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour {
 
     public float gravity = 10;
-    public float speed = 20;
+    public float speed = 50;
     float jumpVelocity = 15;
 
     public GameObject finish;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour {
     public float smoothTime = 0.3f;
 
     public TextMeshProUGUI currentScore, highScore;
+    public TextMeshProUGUI winToast;
    
     public int score = 0;
 
@@ -129,7 +131,7 @@ public class Player : MonoBehaviour {
         {
             MakeRoad();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 15; i++)
             {
                 SpawnBlock();
             }
@@ -147,18 +149,23 @@ public class Player : MonoBehaviour {
         Vector3 newPosition = new Vector3(wallIndex * 100 -100, 0, 0);
         GameObject newRoad = Instantiate(road, newPosition, Quaternion.identity);
 
+        newRoad.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
+
         wallIndex++;
 
         Destroy(newRoad, 40);
 
-        speed+= 0.5f;
+        if (speed < 18)
+        {
+            speed += 0.2f;
+        }
+        
     }
 
     public void SpawnBlock()
     {
-        int randomPositionZ = Random.Range(0, 2) -1;
 
-        Vector3 newPosition = new Vector3(blockIndex * 10, 1, randomPositionZ);
+        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(blockIndex * 10 - 20 , blockIndex * 10 - 5) , 1, UnityEngine.Random.Range(-1.0f, 1.0f));
 
         GameObject newBlock = Instantiate(block, newPosition, Quaternion.identity);
 
@@ -185,8 +192,14 @@ public class Player : MonoBehaviour {
     {
         Debug.Log("Game end");
 
-        PlayerPrefs.SetString("HighScore", score.ToString());
+        if (Convert.ToInt32(score) > Convert.ToInt32(highScore))
+        {
+            winToast.GetComponent<TextMeshProUGUI>().text = "NEW HIGH SCORE!!!";
 
+            PlayerPrefs.SetString("HighScore", score.ToString());
+        }
+
+        
         finish.SetActive(true);
 
         Time.timeScale = 0;

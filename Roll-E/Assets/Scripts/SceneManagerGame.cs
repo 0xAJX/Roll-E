@@ -45,7 +45,7 @@ public class SceneManagerGame : MonoBehaviour {
 
     void Retry()
     {
-
+        SceneManager.LoadScene(1);
     }
 
     public void OnSelectMenu()
