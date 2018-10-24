@@ -9,7 +9,7 @@ public class Player : MonoBehaviour {
 
     public float gravity = 10;
     public float speed = 50;
-    float jumpVelocity = 15;
+    float jumpVelocity = 4;
 
     public GameObject finish;
     public GameObject road;
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour {
 
         if (isLeftSelected && isRightSelected)
         {
-            Jump();
+            //Jump();
         }
         else if (isLeftSelected == true)
         {
