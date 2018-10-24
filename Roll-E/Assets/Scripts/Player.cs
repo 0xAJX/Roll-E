@@ -33,6 +33,12 @@ public class Player : MonoBehaviour {
 
     public bool isLeftSelected = false, isRightSelected = false;
 
+    //public Camera camera;
+
+    public Color colorStart = Color.blue;
+    public Color colorEnd = Color.red;
+    public float duration = 1.0F;
+
     // Use this for initialization
     void Start () {
 
@@ -73,18 +79,19 @@ public class Player : MonoBehaviour {
         {
             Jump();
         }
-
-        if (isLeftSelected == true)
+        else if (isLeftSelected == true)
         {
             Vector3 v = new Vector3(0, 0, 50);
             sphere.AddForce(v * 100);
         }
-
-        if (isRightSelected == true)
+        else if (isRightSelected == true)
         {
             Vector3 v = new Vector3(0, 0, -50);
             sphere.AddForce(v * 100);
         }
+
+        float lerp = Mathf.PingPong(Time.time, duration) / duration;
+        RenderSettings.skybox.SetColor("_Tint", Color.Lerp(colorStart, colorEnd, lerp));
 
     }
 
@@ -149,7 +156,7 @@ public class Player : MonoBehaviour {
         Vector3 newPosition = new Vector3(wallIndex * 100 -100, 0, 0);
         GameObject newRoad = Instantiate(road, newPosition, Quaternion.identity);
 
-        newRoad.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
+        SetColor(newRoad);
 
         wallIndex++;
 
@@ -203,5 +210,10 @@ public class Player : MonoBehaviour {
         finish.SetActive(true);
 
         Time.timeScale = 0;
+    }
+
+    void SetColor(GameObject gameObject)
+    {
+        gameObject.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
     }
 }
