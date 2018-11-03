@@ -154,9 +154,9 @@ public class Player : MonoBehaviour {
 
     public void MakeRoad()
     {
-        int n = 0;
+        //int n = 0;
 
-        //int n = UnityEngine.Random.Range(0, 2);
+        int n = UnityEngine.Random.Range(0, 2);
 
         Vector3 newPosition = new Vector3(wallIndex * 100 -100, 0, 0);
         GameObject newRoad = Instantiate(road[n], newPosition, Quaternion.identity);
@@ -175,30 +175,37 @@ public class Player : MonoBehaviour {
         if (n == 0)
         {
             SetColor(newRoad);
-
-            
-
-            for (int i = 0; i < 5; i++)
-            {
-                SpawnBlock();
-            }
         }
+
+       
+    
+            for (int i = 0; i < 10; i++)
+            {
+                SpawnBlock(n);
+            }
 
         wallIndex++;
         
     }
 
-    public void SpawnBlock()
+    public void SpawnBlock(int n)
     {
 
-        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(blockIndex * 10 -10 , blockIndex * 10) , 1, UnityEngine.Random.Range(-1.0f, 1.0f));
+        //if (n == 0)
+        //{
+            Vector3 newPosition = new Vector3(UnityEngine.Random.Range(blockIndex * 10 - 20, blockIndex * 10 - 10), 1, UnityEngine.Random.Range(-1.0f, 1.0f));
 
-        GameObject newBlock = Instantiate(block, newPosition, Quaternion.identity);
+            GameObject newBlock = Instantiate(block, newPosition, Quaternion.identity);
+
+            Destroy(newBlock, 60);
+       // }
+       
 
         blockIndex++;
 
-        Destroy(newBlock, 60);
+  
     }
+
 
     
 
