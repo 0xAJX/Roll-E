@@ -7,14 +7,16 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
+    public int mass;
+
     public float gravity = 10;
     public float speed = 50;
     float jumpVelocity = 4;
 
     public GameObject finish;
-    public GameObject road;
+    public GameObject[] road;
     public GameObject block;
-    public float blockIndex = 0, wallIndex = 0;
+    public float blockIndex, wallIndex = 0;
 
     public Rigidbody wall;
 
@@ -38,16 +40,18 @@ public class Player : MonoBehaviour {
     public Color colorStart = Color.blue;
     public Color colorEnd = Color.red;
     public float duration = 1.0F;
+    public Button jump;
 
     // Use this for initialization
     void Start () {
-
+        
         sphere = GetComponent<Rigidbody>();
 
         MakeRoad();
 
         //left.onClick.AddListener(OnLeftClick);
         //right.onClick.AddListener(OnRightClick);
+        jump.onClick.AddListener(Jump);
 
         HighScore();
 
@@ -64,6 +68,7 @@ public class Player : MonoBehaviour {
         sphere.velocity = new Vector3(speed,0,0);
         wall.velocity = new Vector3(speed - 1.5f, 0, 0);
         sphere.AddForce(new Vector3(0,-gravity,0) * sphere.mass);
+
 
         /*if (Mathf.Abs(sphere.position.x - wall.position.x) >= 5)
         {
@@ -95,9 +100,9 @@ public class Player : MonoBehaviour {
 
     }
 
-    void Jump()
+    public void Jump()
     {
-        sphere.velocity = new Vector3(0,jumpVelocity,0);
+        sphere.velocity = new Vector3(0,jumpVelocity * 100,0);
     }
 
     void GetInput()
@@ -138,10 +143,6 @@ public class Player : MonoBehaviour {
         {
             MakeRoad();
 
-            for (int i = 0; i < 15; i++)
-            {
-                SpawnBlock();
-            }
 
         }
 
@@ -153,12 +154,16 @@ public class Player : MonoBehaviour {
 
     public void MakeRoad()
     {
+        int n = 0;
+
+        //int n = UnityEngine.Random.Range(0, 2);
+
         Vector3 newPosition = new Vector3(wallIndex * 100 -100, 0, 0);
-        GameObject newRoad = Instantiate(road, newPosition, Quaternion.identity);
+        GameObject newRoad = Instantiate(road[n], newPosition, Quaternion.identity);
 
-        SetColor(newRoad);
+        
 
-        wallIndex++;
+       
 
         Destroy(newRoad, 40);
 
@@ -166,13 +171,27 @@ public class Player : MonoBehaviour {
         {
             speed += 0.2f;
         }
+
+        if (n == 0)
+        {
+            SetColor(newRoad);
+
+            
+
+            for (int i = 0; i < 5; i++)
+            {
+                SpawnBlock();
+            }
+        }
+
+        wallIndex++;
         
     }
 
     public void SpawnBlock()
     {
 
-        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(blockIndex * 10 - 20 , blockIndex * 10 - 5) , 1, UnityEngine.Random.Range(-1.0f, 1.0f));
+        Vector3 newPosition = new Vector3(UnityEngine.Random.Range(blockIndex * 10 -10 , blockIndex * 10) , 1, UnityEngine.Random.Range(-1.0f, 1.0f));
 
         GameObject newBlock = Instantiate(block, newPosition, Quaternion.identity);
 
