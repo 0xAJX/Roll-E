@@ -154,16 +154,13 @@ public class Player : MonoBehaviour {
 
     public void MakeRoad()
     {
-        //int n = 0;
+        //int n = 2;
 
-        int n = UnityEngine.Random.Range(0, 2);
+        int n = UnityEngine.Random.Range(0, 3);
 
         Vector3 newPosition = new Vector3(wallIndex * 100 -100, 0, 0);
-        GameObject newRoad = Instantiate(road[n], newPosition, Quaternion.identity);
+        GameObject newRoad = Instantiate(road[n], newPosition, road[n].transform.rotation);
 
-        
-
-       
 
         Destroy(newRoad, 40);
 

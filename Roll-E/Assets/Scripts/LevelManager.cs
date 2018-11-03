@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour {
 
-    public Button start,how2,aboutme, exit;
+    public Button start,how2,aboutme,exit,home;
+    public GameObject am, homepage;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,7 @@ public class LevelManager : MonoBehaviour {
         how2.onClick.AddListener(How2Play);
         aboutme.onClick.AddListener(AboutMe);
         exit.onClick.AddListener(ExitGame);
+        home.onClick.AddListener(Home);
 
     }
 	
@@ -38,7 +40,8 @@ public class LevelManager : MonoBehaviour {
 
     void AboutMe()
     {
-
+        homepage.SetActive(false);
+        am.SetActive(true);
     }
 
     void ExitGame()
@@ -46,4 +49,9 @@ public class LevelManager : MonoBehaviour {
         Application.Quit();
     }
 
+    void Home()
+    {
+        am.SetActive(false);
+        homepage.SetActive(true);
+    }
 }
