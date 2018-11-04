@@ -37,9 +37,10 @@ public class Player : MonoBehaviour {
 
     //public Camera camera;
 
-    public Color colorStart = Color.blue;
-    public Color colorEnd = Color.red;
-    public float duration = 1.0F;
+    //public Color colorStart = Color.blue;
+    //public Color colorEnd = Color.red;
+    //public float duration = 1.0F;
+
     public Button jump;
 
     //Gyro
@@ -65,6 +66,8 @@ public class Player : MonoBehaviour {
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
+       
+
     }
 	
 	// Update is called once per frame
@@ -85,32 +88,36 @@ public class Player : MonoBehaviour {
             wall.transform.Translate(sphere.position.x - 5, 0, 0);
         } */
 
-        if (sphere.position.y <= -3)
+        if (PlayerPrefs.GetString("Controls") == "Buttons")
         {
-            IsDead();
+            if (sphere.position.y <= -3)
+            {
+                IsDead();
+            }
+
+            if (isLeftSelected && isRightSelected)
+            {
+                //Jump();
+            }
+            else if (isLeftSelected == true)
+            {
+                Vector3 v = new Vector3(0, 0, 50);
+                sphere.AddForce(v * 100);
+            }
+            else if (isRightSelected == true)
+            {
+                Vector3 v = new Vector3(0, 0, -50);
+                sphere.AddForce(v * 100);
+            }
+        }else if (PlayerPrefs.GetString("Controls") == "Acc")
+
+        {
+            UseAcc();
         }
 
-        if (isLeftSelected && isRightSelected)
-        {
-            //Jump();
-        }
-        else if (isLeftSelected == true)
-        {
-            Vector3 v = new Vector3(0, 0, 50);
-            sphere.AddForce(v * 100);
-        }
-        else if (isRightSelected == true)
-        {
-            Vector3 v = new Vector3(0, 0, -50);
-            sphere.AddForce(v * 100);
-        }
 
-        float lerp = Mathf.PingPong(Time.time, duration) / duration;
-        RenderSettings.skybox.SetColor("_Tint", Color.Lerp(colorStart, colorEnd, lerp));
-
-
-        UseAcc();
-
+        //float lerp = Mathf.PingPong(Time.time, duration) / duration;
+        //RenderSettings.skybox.SetColor("_Tint", Color.Lerp(colorStart, colorEnd, lerp));
     }
 
     public void Jump()

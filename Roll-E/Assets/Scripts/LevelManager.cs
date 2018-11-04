@@ -1,14 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour {
 
-    public Button start,how2,setting,aboutme,exit,home;
+    public Button start,how2,setting,aboutme,exit,home,shome;
     public GameObject am, homepage;
+    public GameObject sp;
 
+    public bool swt = false;
+    public TextMeshProUGUI controls;
+    public Image sound;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +23,23 @@ public class LevelManager : MonoBehaviour {
         aboutme.onClick.AddListener(AboutMe);
         exit.onClick.AddListener(ExitGame);
         home.onClick.AddListener(Home);
+        shome.onClick.AddListener(Shome);
+        setting.onClick.AddListener(Setting);
+
+        if (PlayerPrefs.GetString("Controls") == null)
+        {
+            PlayerPrefs.SetString("Controls", "Buttons");
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Buttons";
+        }
+
+        if (PlayerPrefs.GetString("Controls") == "Buttons")
+        {
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Buttons";
+        }
+        else
+        {
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
+        }
 
     }
 	
@@ -25,6 +47,12 @@ public class LevelManager : MonoBehaviour {
 	void FixedUpdate () {
 		
 	}
+
+    void Shome()
+    {
+        sp.SetActive(false);
+        homepage.SetActive(true);
+    }
 
     void StartGame()
     {
@@ -41,7 +69,8 @@ public class LevelManager : MonoBehaviour {
 
     void Setting()
     {
-
+        homepage.SetActive(false);
+        sp.SetActive(true);
     }
 
     void AboutMe()
@@ -74,5 +103,25 @@ public class LevelManager : MonoBehaviour {
     public void LinkedIn()
     {
         Application.OpenURL("");
+    }
+
+    public void Sounds()
+    {
+       
+    }
+
+    public void Controls()
+    {
+        if (PlayerPrefs.GetString("Controls") == "Acc")
+        {
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Buttons";
+            PlayerPrefs.SetString("Controls", "Buttons");
+        }
+        else
+        {
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
+            PlayerPrefs.SetString("Controls", "Acc");
+        }
+             
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SceneManagerGame : MonoBehaviour {
 
-    public Button menu,resume,settings,quit,retry,exit;
+    public Button menu,resume,quit,retry,exit;
     public GameObject go;
 
     // Use this for initialization
@@ -14,7 +14,7 @@ public class SceneManagerGame : MonoBehaviour {
 
         //menu.onClick.AddListener(OnSelectMenu);
         resume.onClick.AddListener(Resume);
-        settings.onClick.AddListener(Settings);
+        //settings.onClick.AddListener(Settings);
         quit.onClick.AddListener(Quit);
         exit.onClick.AddListener(Quit);
         retry.onClick.AddListener(Retry);
@@ -30,11 +30,6 @@ public class SceneManagerGame : MonoBehaviour {
     {
         Time.timeScale = 1;
         go.SetActive(false);
-    }
-
-    void Settings()
-    {
-        
     }
 
     void Quit()
