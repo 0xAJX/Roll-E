@@ -42,6 +42,10 @@ public class Player : MonoBehaviour {
     public float duration = 1.0F;
     public Button jump;
 
+    //Gyro
+
+    //Gyroscope gyro;
+
     // Use this for initialization
     void Start () {
         
@@ -54,6 +58,12 @@ public class Player : MonoBehaviour {
         jump.onClick.AddListener(Jump);
 
         HighScore();
+
+        //gyro = EnableGyro();
+
+        //Input.gyro.enabled = true;
+
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
     }
 	
@@ -97,6 +107,9 @@ public class Player : MonoBehaviour {
 
         float lerp = Mathf.PingPong(Time.time, duration) / duration;
         RenderSettings.skybox.SetColor("_Tint", Color.Lerp(colorStart, colorEnd, lerp));
+
+
+        UseAcc();
 
     }
 
@@ -238,5 +251,15 @@ public class Player : MonoBehaviour {
     void SetColor(GameObject gameObject)
     {
         gameObject.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
+    }
+
+    public void UseAcc()
+    {
+        float IOZ = Input.acceleration.x;
+        //sphere.AddForce(IOX * 100, 0, 0);
+
+        Vector3 v = new Vector3(0, 0, -IOZ);
+
+        sphere.AddForce(v * 10000 * 2);
     }
 }

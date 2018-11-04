@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour {
 
-    public Button start,how2,aboutme,exit,home;
+    public Button start,how2,setting,aboutme,exit,home;
     public GameObject am, homepage;
+
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +39,11 @@ public class LevelManager : MonoBehaviour {
 
     }
 
+    void Setting()
+    {
+
+    }
+
     void AboutMe()
     {
         homepage.SetActive(false);
@@ -53,5 +59,20 @@ public class LevelManager : MonoBehaviour {
     {
         am.SetActive(false);
         homepage.SetActive(true);
+    }
+
+    public void Git()
+    {
+        Application.OpenURL("https://www.github.com/Pr0k1ng/Roll-E");
+    }
+
+    public void Live()
+    {
+        
+    }
+
+    public void LinkedIn()
+    {
+        Application.OpenURL("");
     }
 }
