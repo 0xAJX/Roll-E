@@ -88,12 +88,14 @@ public class Player : MonoBehaviour {
             wall.transform.Translate(sphere.position.x - 5, 0, 0);
         } */
 
+        if (sphere.position.y <= -1)
+        {
+            IsDead();
+        }
+
         if (PlayerPrefs.GetString("Controls") == "Buttons")
         {
-            if (sphere.position.y <= -3)
-            {
-                IsDead();
-            }
+            
 
             if (isLeftSelected && isRightSelected)
             {
