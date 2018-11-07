@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour {
         if (PlayerPrefs.GetString("Controls") == null)
         {
             PlayerPrefs.SetString("Controls", "Buttons");
-            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Buttons";
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Touch";
         }
 
         if (PlayerPrefs.GetString("Controls") == "Buttons")
@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour {
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
         }
 
-        if (PlayerPrefs.GetString("Sound") == null)
+        /*if (PlayerPrefs.GetString("Sound") == null)
         {
             PlayerPrefs.SetString("Sound", "on");
         }
@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour {
         else
         {
             //controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
-        }
+        } */
 
     }
 	
@@ -154,24 +154,24 @@ public class LevelManager : MonoBehaviour {
 
     public void Sounds()
     {
-        if (PlayerPrefs.GetString("Sound") == "on")
+        /*if (PlayerPrefs.GetString("Sound") == "on")
         {
 
         }
         else
         {
 
-        }
+        } */
     }
 
     public void Controls()
     {
         if (PlayerPrefs.GetString("Controls") == "Acc")
         {
-            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Buttons";
-            PlayerPrefs.SetString("Controls", "Touch");
+            controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Touch";
+            PlayerPrefs.SetString("Controls", "Buttons");
         }
-        else
+        else if(PlayerPrefs.GetString("Controls") == "Buttons")
         {
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
             PlayerPrefs.SetString("Controls", "Acc");

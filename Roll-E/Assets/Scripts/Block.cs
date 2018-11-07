@@ -12,7 +12,7 @@ public class Block : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (gameObject.transform.position.y < -5)
+        if (gameObject.transform.position.y < -2)
         {
             Destroy(gameObject);
         }
