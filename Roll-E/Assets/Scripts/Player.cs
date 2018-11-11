@@ -35,6 +35,8 @@ public class Player : MonoBehaviour {
 
     public bool isLeftSelected = false, isRightSelected = false;
 
+    Collider collider;
+
     //public Camera camera;
 
     //public Color colorStart = Color.blue;
@@ -51,6 +53,7 @@ public class Player : MonoBehaviour {
     void Start () {
         
         sphere = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
 
         MakeRoad();
 
@@ -172,6 +175,24 @@ public class Player : MonoBehaviour {
         {
             IsDead();
         }
+
+        if (other.tag.Equals("PowerUp"))
+        {
+            Destroy(other);
+
+            StartCoroutine(SpeedUp());
+
+        }
+    }
+
+    IEnumerator SpeedUp()
+    {
+        float s = speed;
+        speed = 20f;
+        
+        yield return new WaitForSeconds(5f);
+        speed = s;
+
     }
 
     public void MakeRoad()
