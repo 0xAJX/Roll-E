@@ -35,6 +35,8 @@ public class Player : MonoBehaviour {
 
     public bool isLeftSelected = false, isRightSelected = false;
 
+    public int turn = 50;
+
     Collider collider;
 
     //public Camera camera;
@@ -44,6 +46,9 @@ public class Player : MonoBehaviour {
     //public float duration = 1.0F;
 
     public Button jump;
+
+
+    public GameObject[] powerup;
 
     //Gyro
 
@@ -106,12 +111,12 @@ public class Player : MonoBehaviour {
             }
             else if (isLeftSelected == true)
             {
-                Vector3 v = new Vector3(0, 0, 50);
+                Vector3 v = new Vector3(0, 0, turn);
                 sphere.AddForce(v * 100);
             }
             else if (isRightSelected == true)
             {
-                Vector3 v = new Vector3(0, 0, -50);
+                Vector3 v = new Vector3(0, 0, -turn);
                 sphere.AddForce(v * 100);
             }
         }else if (PlayerPrefs.GetString("Controls") == "Acc")
@@ -183,6 +188,14 @@ public class Player : MonoBehaviour {
             StartCoroutine(SpeedUp());
 
         }
+
+        if (other.tag.Equals("Turn"))
+        {
+            Destroy(other);
+
+            StartCoroutine(IncTurn());
+
+        }
     }
 
     IEnumerator SpeedUp()
@@ -193,6 +206,14 @@ public class Player : MonoBehaviour {
         yield return new WaitForSeconds(5f);
         speed = s;
 
+    }
+
+    IEnumerator IncTurn()
+    {
+        int t = turn;
+        turn = 100;
+        yield return new WaitForSeconds(5f);
+        turn = t;
     }
 
     public void MakeRoad()
@@ -225,7 +246,11 @@ public class Player : MonoBehaviour {
             }
 
         wallIndex++;
-        
+
+
+        GameObject powerspawn = Instantiate(powerup[0], new Vector3(newPosition.x,1,UnityEngine.Random.Range(-1,1)), Quaternion.identity);
+        Destroy(powerspawn, 50f);
+
     }
 
     public void SpawnBlock(int n)
