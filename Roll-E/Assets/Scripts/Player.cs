@@ -133,6 +133,7 @@ public class Player : MonoBehaviour {
     public void Jump()
     {
         sphere.velocity = new Vector3(0,jumpVelocity * 100,0);
+        
     }
 
     void GetInput()
@@ -181,11 +182,11 @@ public class Player : MonoBehaviour {
             IsDead();
         }
 
-        if (other.tag.Equals("PowerUp"))
+        if (other.tag.Equals("SlowTime"))
         {
             Destroy(other);
 
-            StartCoroutine(SpeedUp());
+            StartCoroutine(SlowTime());
 
         }
 
@@ -198,13 +199,14 @@ public class Player : MonoBehaviour {
         }
     }
 
-    IEnumerator SpeedUp()
+    IEnumerator SlowTime()
     {
         float s = speed;
-        speed = 20f;
-        
+        //speed = 20f;
+        Time.timeScale = 0.7f;
         yield return new WaitForSeconds(5f);
-        speed = s;
+        Time.timeScale = 1f;
+        //speed = s;
 
     }
 
@@ -248,7 +250,9 @@ public class Player : MonoBehaviour {
         wallIndex++;
 
 
-        GameObject powerspawn = Instantiate(powerup[0], new Vector3(newPosition.x,1,UnityEngine.Random.Range(-1,1)), Quaternion.identity);
+        int r = UnityEngine.Random.Range(0,2);
+
+        GameObject powerspawn = Instantiate(powerup[r], new Vector3(newPosition.x,1,UnityEngine.Random.Range(-1,1)), Quaternion.identity);
         Destroy(powerspawn, 50f);
 
     }
