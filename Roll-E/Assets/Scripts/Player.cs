@@ -47,9 +47,9 @@ public class Player : MonoBehaviour {
 
     public Button jump;
 
-
+    Material m_material;
     public GameObject[] powerup;
-
+    Color col;
     //Gyro
 
     //Gyroscope gyro;
@@ -74,7 +74,8 @@ public class Player : MonoBehaviour {
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-       
+        m_material = GetComponent<Renderer>().material;
+        col = m_material.color;
 
     }
 	
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour {
         score = (int)(Time.timeSinceLevelLoad * 10);
         currentScore.GetComponent<TextMeshProUGUI>().text = "SCORE: " + score.ToString();
 
-        GetInput();
+        //GetInput();
 
         sphere.velocity = new Vector3(speed,0,0);
         wall.velocity = new Vector3(speed - 1.5f, 0, 0);
@@ -133,14 +134,20 @@ public class Player : MonoBehaviour {
     public void Jump()
     {
         sphere.velocity = new Vector3(0,jumpVelocity * 100,0);
+        StartCoroutine(J1());
         
+    }
+
+    IEnumerator J1()
+    {
+        yield return new WaitForSeconds(2f);
     }
 
     void GetInput()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            Jump();
+            //Jump();
             Debug.Log("Up pressed");
         }
      
@@ -203,19 +210,30 @@ public class Player : MonoBehaviour {
     {
         float s = speed;
         //speed = 20f;
+
+        GetComponent<Renderer>().material.color = Color.cyan;
+
         Time.timeScale = 0.7f;
+
         yield return new WaitForSeconds(5f);
         Time.timeScale = 1f;
+
+        GetComponent<Renderer>().material.color = col;
         //speed = s;
 
     }
 
     IEnumerator IncTurn()
     {
-        int t = turn;
+        //int t = turn;
         turn = 100;
+
+        GetComponent<Renderer>().material.color = Color.yellow;
+
         yield return new WaitForSeconds(5f);
-        turn = t;
+        turn = 50;
+
+        GetComponent<Renderer>().material.color = col ;
     }
 
     public void MakeRoad()
@@ -230,9 +248,9 @@ public class Player : MonoBehaviour {
 
         Destroy(newRoad, 40);
 
-        if (speed < 18)
+        if (speed < 20)
         {
-            speed += 0.2f;
+            speed += 0.3f;
         }
 
         if (n == 0)
@@ -252,7 +270,7 @@ public class Player : MonoBehaviour {
 
         int r = UnityEngine.Random.Range(0,2);
 
-        GameObject powerspawn = Instantiate(powerup[r], new Vector3(newPosition.x,1,UnityEngine.Random.Range(-1,1)), Quaternion.identity);
+        GameObject powerspawn = Instantiate(powerup[r], new Vector3(newPosition.x - 1,1.3f,UnityEngine.Random.Range(-1,1)), Quaternion.identity);
         Destroy(powerspawn, 50f);
 
     }

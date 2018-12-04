@@ -27,5 +27,6 @@ public class PowerUpAnim : MonoBehaviour {
         anim.Play();
     }
 
+  
     
 }
