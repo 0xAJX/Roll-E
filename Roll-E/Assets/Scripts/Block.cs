@@ -18,4 +18,12 @@ public class Block : MonoBehaviour {
         }
 
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Turn" || other.tag == "SlowTime")
+        {
+            Destroy(gameObject);
+        }
+    }
 }
