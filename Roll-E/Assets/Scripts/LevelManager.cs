@@ -31,20 +31,19 @@ public class LevelManager : MonoBehaviour {
         shome.onClick.AddListener(Shome);
         setting.onClick.AddListener(Setting);
 
-        if (PlayerPrefs.GetString("Controls") == null)
-        {
-            PlayerPrefs.SetString("Controls", "Buttons");
+       
+            PlayerPrefs.SetString("Controls", "Touch");
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Touch";
-        }
+    
 
-        if (PlayerPrefs.GetString("Controls") == "Buttons")
+        /*if (PlayerPrefs.GetString("Controls") == "Touch")
         {
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Touch";
         }
-        else
+        else if(PlayerPrefs.GetString("Controls") == "Acc")
         {
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
-        }
+        }*/
 
         /*if (PlayerPrefs.GetString("Sound") == null)
         {
@@ -169,9 +168,9 @@ public class LevelManager : MonoBehaviour {
         if (PlayerPrefs.GetString("Controls") == "Acc")
         {
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Touch";
-            PlayerPrefs.SetString("Controls", "Buttons");
+            PlayerPrefs.SetString("Controls", "Touch");
         }
-        else if(PlayerPrefs.GetString("Controls") == "Buttons")
+        else if(PlayerPrefs.GetString("Controls") == "Touch")
         {
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Accelerometer";
             PlayerPrefs.SetString("Controls", "Acc");

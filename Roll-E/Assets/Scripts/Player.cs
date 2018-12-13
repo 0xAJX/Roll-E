@@ -30,8 +30,8 @@ public class Player : MonoBehaviour {
 
     public TextMeshProUGUI currentScore, highScore;
     public TextMeshProUGUI winToast;
-   
-    public int score = 0;
+
+    public int score;
 
     public bool isLeftSelected = false, isRightSelected = false;
 
@@ -50,13 +50,17 @@ public class Player : MonoBehaviour {
     Material m_material;
     public GameObject[] powerup;
     Color col;
+    int hs;
     //Gyro
 
     //Gyroscope gyro;
 
     // Use this for initialization
     void Start () {
-        
+        //PlayerPrefs.DeleteKey("HighScore");
+
+        hs = PlayerPrefs.GetInt("HighScore",0);
+
         sphere = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 
@@ -102,7 +106,7 @@ public class Player : MonoBehaviour {
             IsDead();
         }
 
-        if (PlayerPrefs.GetString("Controls") == "Buttons")
+        if (PlayerPrefs.GetString("Controls") == "Touch")
         {
             
 
@@ -298,13 +302,13 @@ public class Player : MonoBehaviour {
 
     void HighScore()
     {
-        if (PlayerPrefs.GetString("HighScore") == null)
+        if (PlayerPrefs.GetInt("HighScore", 0) == 0)
         {
             highScore.GetComponent<TextMeshProUGUI>().text = "High Score: 0";
         }
         else
         {
-            highScore.GetComponent<TextMeshProUGUI>().text = "High Score: " + PlayerPrefs.GetString("HighScore");
+            highScore.GetComponent<TextMeshProUGUI>().text = "High Score: " + PlayerPrefs.GetInt("HighScore",0).ToString();
         }
     }
 
@@ -312,11 +316,11 @@ public class Player : MonoBehaviour {
     {
         Debug.Log("Game end");
 
-        if (Convert.ToInt32(score) > Convert.ToInt32(highScore))
+        if (score > hs)
         {
             winToast.GetComponent<TextMeshProUGUI>().text = "NEW HIGH SCORE!!!";
 
-            PlayerPrefs.SetString("HighScore", score.ToString());
+            PlayerPrefs.SetInt("HighScore", score);
         }
 
         
