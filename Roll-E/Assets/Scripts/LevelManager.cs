@@ -18,6 +18,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject loadingObj;
     public Slider slider;
 
+    public TextMeshProUGUI quality;
     AsyncOperation async;
 
 	// Use this for initialization
@@ -31,7 +32,27 @@ public class LevelManager : MonoBehaviour {
         shome.onClick.AddListener(Shome);
         setting.onClick.AddListener(Setting);
 
+
+        if (PlayerPrefs.GetInt("Quality", 0) == 0)
+        {
+            PlayerPrefs.SetInt("Quality", 2);
+            quality.GetComponent<TextMeshProUGUI>().text = "Quality : Low";
+            QualitySettings.SetQualityLevel(2, false);
+        }
+        else if (PlayerPrefs.GetInt("Quality") == 2)
+        {
+            //PlayerPrefs.SetInt("Quality", 2);
+            quality.GetComponent<TextMeshProUGUI>().text = "Quality : Low";
+            QualitySettings.SetQualityLevel(2, false);
+        }
+        else if (PlayerPrefs.GetInt("Quality") == 5)
+        {
+            //PlayerPrefs.SetInt("Quality", 5);
+            quality.GetComponent<TextMeshProUGUI>().text = "Quality : High";
+            QualitySettings.SetQualityLevel(2, true);
+        }
        
+
             PlayerPrefs.SetString("Controls", "Touch");
             controls.GetComponent<TextMeshProUGUI>().text = "Controls :" + " Touch";
     
@@ -176,5 +197,21 @@ public class LevelManager : MonoBehaviour {
             PlayerPrefs.SetString("Controls", "Acc");
         }
              
+    }
+
+    public void Quality()
+    {
+        if (PlayerPrefs.GetInt("Quality") == 2)
+        {
+            PlayerPrefs.SetInt("Quality", 5);
+            quality.GetComponent<TextMeshProUGUI>().text = "Quality : High";
+            QualitySettings.SetQualityLevel(2, true);
+        }
+        else if(PlayerPrefs.GetInt("Quality") == 5)
+        {
+            PlayerPrefs.SetInt("Quality", 2);
+            quality.GetComponent<TextMeshProUGUI>().text = "Quality : Low";
+            QualitySettings.SetQualityLevel(2, false);
+        }
     }
 }
