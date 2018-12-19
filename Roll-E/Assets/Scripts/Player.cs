@@ -51,6 +51,8 @@ public class Player : MonoBehaviour {
     public GameObject[] powerup;
     Color col;
     int hs;
+
+    PowerUpAnim pamin;
     //Gyro
 
     //Gyroscope gyro;
@@ -195,16 +197,16 @@ public class Player : MonoBehaviour {
 
         if (other.tag.Equals("SlowTime"))
         {
-            Destroy(other);
-
+            Destroy(other.gameObject);
+           
             StartCoroutine(SlowTime());
 
         }
 
         if (other.tag.Equals("Turn"))
         {
-            Destroy(other);
-
+            Destroy(other.gameObject);
+            
             StartCoroutine(IncTurn());
 
         }
